@@ -1,0 +1,28 @@
+---
+- hosts: master
+  vars:
+  - wp_name: wp
+  - db_name: mysqldb
+  - expose_port: 80
+  - svc_type: NodePort
+  tasks:
+  - name: Copying Wordpress file
+    template:
+       src: wp.yml.j2
+       dest: /root/wp.yml
+
+  - name: Copying Mysql file
+    template:
+       src: mysql.yml.j2
+       dest: /root/mysql.yml
+
+  - name: Deploying Mysql DataBase
+    shell: kubectl apply -f /root/mysql.yml
+
+  - name: Deploying WordPress
+    shell: kubectl apply -f /root/wp.yml
+
+  - name: Exposing WordPress App
+    shell: "kubectl expose pod {{ wp_name }} --type={{ svc_type }} --port={{ expose_port }}"
+
+

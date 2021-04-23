@@ -1,4 +1,11 @@
 - hosts: localhost
+  var:
+  - region: "region"
+  - ins_type: "instance type"
+  - ami: "ami_id"
+  - key: "your keyname"
+  - sg: "security group id"
+  - subnet: "subnet id"
   tasks:
   - name: "Installing Python package"
     package:
@@ -9,48 +16,48 @@
        name: "boto3"
   - name: "Launching Master Instance"
     ec2_instance:
-       region: "ap-south-1"
+       region: "{{ region }}"
        name: "master"
-       instance_type: "t2.micro"
+       instance_type: "{{ ins_type }}"
        wait: yes
        wait_timeout: 20
-       key_name: "myfirst2020key"
-       image_id: "ami-08e0ca9924195beba"
-       security_group: "sg-028e2bcfbabdc2edb"
+       key_name: "{{ key }}"
+       image_id: "{{ ami }}"
+       security_group: "{{ sg }}"
        state: present
-       vpc_subnet_id: "subnet-e4dca3a8"
+       vpc_subnet_id: "{{ subnet }}"
     register: master
 
   - name: "Launching Slave1 Instance"
     ec2_instance:
-       region: "ap-south-1"
+       region: "{{ region }}"
        name: "slave1"
        wait: yes
        wait_timeout: 20
-       instance_type: "t2.micro"
-       key_name: "myfirst2020key"
-       image_id: "ami-08e0ca9924195beba"
-       security_group: "sg-028e2bcfbabdc2edb"
+       instance_type: "{{ ins_type }}"
+       key_name: "{{ key }}"
+       image_id: "{{ ami }}"
+       security_group: "{{ sg }}"
        tags:
           group: slave
        state: present
-       vpc_subnet_id: "subnet-e4dca3a8"
+       vpc_subnet_id: "{{ subnet }}"
     register: slave1
 
   - name: "Launching Slave2 Instance"
     ec2_instance:
-       region: "ap-south-1"
+       region: "{{ region }}"
        name: "slave2"
        tags:
           group: slave
-       instance_type: "t2.micro"
+       instance_type: "{{ ins_type }}"
        wait: yes
        wait_timeout: 20
-       key_name: "myfirst2020key"
-       image_id: "ami-08e0ca9924195beba"
-       security_group: "sg-028e2bcfbabdc2edb"
+       key_name: "{{ key }}"
+       image_id: "{{ ami }}"
+       security_group: "{{ sg }}"
        state: present
-       vpc_subnet_id: "subnet-e4dca3a8"
+       vpc_subnet_id: "{{ subnet }}"
     register: slave2
 
   - name: Updating inventory 

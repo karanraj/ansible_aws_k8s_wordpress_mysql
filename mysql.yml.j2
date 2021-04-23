@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata: 
+   name: "{{ db_name }}"
+   labels:
+      db: mysql
+spec:
+   containers:
+   - name: "db"
+     image: "mysql:5.7"
+     env:
+     - name: MYSQL_ROOT_PASSWORD
+       value: redhat
+     - name: MYSQL_USER
+       value: wp
+     - name: MYSQL_PASSWORD
+       value: redhat
+     - name: MYSQL_DATABASE
+       value: wp
+

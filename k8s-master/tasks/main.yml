@@ -76,7 +76,7 @@
     path: $HOME/.kube
     state: directory
 
-- name: Copying file config file
+- name: Copying config file
   copy:
     dest: $HOME/.kube/config
     src: /etc/kubernetes/admin.conf
